@@ -38,10 +38,9 @@ jobs:
         with:
           projectPath: ${{ matrix.projectPath }}
           unityVersion: ${{ matrix.unityVersion }}
-          artifactsPath: ${{ matrix.targetPlatform }}-TestResult
       - uses: actions/upload-artifact@v1
         with:
-          name: Test results (all modes)
+          name: ${{ matrix.targetPlatform }} Test results (all modes)
           path: ${{ steps.testRunner.outputs.artifactsPath }}
       - uses: webbertakken/unity-builder@v0.10
         with:
@@ -51,5 +50,5 @@ jobs:
           #customParameters: "-myParameter myValue -myBoolean -ThirdParameter andItsValue"
       - uses: actions/upload-artifact@v1
         with:
-          name: ${{ matrix.targetPlatform }}-Build
+          name: ${{ matrix.targetPlatform }} Build
           path: build
