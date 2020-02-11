@@ -21,7 +21,7 @@ namespace Tests
         [UnityTest]
         public IEnumerator NewTestScriptWithEnumeratorPasses()
         {
-			Assert.That(1 == 2.0f);
+			Assert.That(1 == 1);
 
 			// Use the Assert class to test conditions.
 			// Use yield to skip a frame.

@@ -12,6 +12,7 @@ namespace Tests
         [Test]
         public void NewPlayTestScriptSimplePasses()
         {
+			Assert.That(true);
             // Use the Assert class to test conditions
         }
 
