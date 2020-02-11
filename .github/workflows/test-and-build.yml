@@ -40,7 +40,6 @@ jobs:
         with:
           projectPath: ${{ matrix.projectPath }}
           unityVersion: ${{ matrix.unityVersion }}
-          testMode: ${{ matrix.testMode }}
           artifactsPath: ${{ matrix.targetPlatform }}-TestResult
       - uses: actions/upload-artifact@v1
         with:
@@ -51,9 +50,8 @@ jobs:
           projectPath: ${{ matrix.projectPath }}
           unityVersion: ${{ matrix.unityVersion }}
           targetPlatform: ${{ matrix.targetPlatform }}
-          buildsPath: ${{ matrix.targetPlatform }}-build
-          customParameters: "-myParameter myValue -myBoolean -ThirdParameter andItsValue"
+          #customParameters: "-myParameter myValue -myBoolean -ThirdParameter andItsValue"
       - uses: actions/upload-artifact@v1
         with:
           name: ${{ matrix.targetPlatform }}-Build
-          path: ${{ matrix.targetPlatform }}-build
+          path: build
