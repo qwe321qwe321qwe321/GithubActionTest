@@ -1,4 +1,4 @@
-name: Test and Build
+name: Test and Build v2
 
 on:
   pull_request: {}
@@ -28,7 +28,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           lfs: true
-      - uses: actions/cache@v1.1.0
+      - uses: actions/cache@v1
         with:
           path: ${{ matrix.projectPath }}/Library
           key: Library-${{ matrix.projectPath }}-${{ matrix.targetPlatform }}
