@@ -33,7 +33,7 @@ jobs:
           path: ${{ matrix.projectPath }}/Library
           key: Library-${{ matrix.projectPath }}-${{ matrix.targetPlatform }}
 
-      - uses: webbertakken/unity-test-runner@v1.3
+      - uses: webbertakken/unity-test-runner@v1.4.1
         id: testRunner
         with:
           projectPath: ${{ matrix.projectPath }}
