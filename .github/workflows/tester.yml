@@ -1,8 +1,6 @@
 name: Tester
 
-on:
-  pull_request: {}
-  push: {}
+on: [push, pull_request]
 
 env:
   UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
