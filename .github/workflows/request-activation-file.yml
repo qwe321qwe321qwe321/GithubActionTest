@@ -1,20 +1,20 @@
-name: Acquire activation file
-on: repository_dispatch
-jobs:
-  activation:
-    name: Request manual activation file 🔑
-    if: github.event.action == 'request_activation_file'
-    runs-on: ubuntu-latest
+name: Acquire activation file # 該Action的名稱，將顯示在Github Action的頁面UI
+on: repository_dispatch  #觸發Action的條件，改為repository_dispatch觸發
+jobs: # 工作項目，可平行處理。
+  activation: # 工作項目的變數名
+    name: Request manual activation file 🔑 # 工作項目的顯示名稱，將顯示在Action頁面UI上。
+    if: github.event.action == 'request_activation_file' # 判斷傳入參數是否為request_activation_file，是才會運行。注意github.event.action即curl傳入的參數event_type
+    runs-on: ubuntu-latest # 運行的裝置
     steps:
         # Request manual activation file
-        - name: Request manual activation file
-          id: getManualLicenseFile
-          uses: webbertakken/unity-request-manual-activation-file@v1.1
-          with:
-            unityVersion: 2018.4.13f1
+        - name: Request manual activation file # 顯示名稱
+          id: getManualLicenseFile # 變數名，內部使用
+          uses: webbertakken/unity-request-manual-activation-file@v1.1 # 引用外部方法。
+          with: # with用於輸入參數，可想像成上面是一個叫getManualLicenseFile()的函數/方法
+            unityVersion: 2018.4.13f1 # 參數，用於輸入進上方的函數/方法。
         # Upload artifact (Unity_v20XX.X.XXXX.alf)
         - name: Expose as artifact
-          uses: actions/upload-artifact@v1
+          uses: actions/upload-artifact@v1 # 引用外部方法，該方法為將指定路徑下的檔案上傳為artifact。
           with:
-            name: ${{ steps.getManualLicenseFile.outputs.filePath }}
-            path: ${{ steps.getManualLicenseFile.outputs.filePath }}
+            name: ${{ steps.getManualLicenseFile.outputs.filePath }} # 引用上面step1的輸出值(outputs)
+            path: ${{ steps.getManualLicenseFile.outputs.filePath }} # 引用上面step1的輸出值(outputs)

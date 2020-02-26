@@ -1,40 +1,40 @@
 name: Tester
 
-on: [push, pull_request]
+on: [push] # 任何push都會觸發
 
-env:
-  UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+env: # 環境變數
+  UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }} # 將UNITY_LICENSE設定為存在secrets中的UNITY_LICENSE
 
 jobs:
   testAllModes:
-    name: Test in ${{ matrix.testMode }} on version ${{ matrix.unityVersion }}
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        projectPath:
+    name: Test in ${{ matrix.testMode }} on version ${{ matrix.unityVersion }} # matrix.testmode以及matrix.unityVersion在下面有定義
+    runs-on: ubuntu-latest 
+    strategy: # 主要用matrix來分割job，以及帶有部分參數
+      fail-fast: false # fail-fast若為true時，任意一個matrix中的job失敗後會立刻停止所有job的運作。
+      matrix: # matrix用於分割job，它可以將一個job分成好幾個，數量由它的參數個數而定。以這裡為例，一共會有1*1*2=2個job。
+        projectPath: # repo中unity project的相對路徑，若有多個project需要測試可以加在下面。
           - project
-        unityVersion:
+        unityVersion: # unity的版本，若有多個版本需要測試可以加在下面。
           - 2018.4.13f1
-        testMode:
+        testMode: # 測試模式，一般來說只有playmode和editmode，可以依照需求註解掉不需要的。
           - playmode
           - editmode
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2 # checkout方法用來clone本專案(repo)到裝置內。
         with:
-          lfs: true
-      - uses: actions/cache@v1
+          lfs: true # 要不要下載git-lfs檔，即大型檔案。
+      - uses: actions/cache@v1 # cache方法用於儲存/還原快取檔，用以加速運行。
         with:
-          path: ${{ matrix.projectPath }}/Library
-          key: Library-${{ matrix.projectPath }}
-      - uses: webbertakken/unity-test-runner@v1.4
+          path: ${{ matrix.projectPath }}/Library # 這裡我們用來快取Unity的Library資料夾，以防每次重開專案都要花時間建置Library資料夾。
+          key: Library-${{ matrix.projectPath }} # key即identifier，存取時需要。
+      - uses: webbertakken/unity-test-runner@v1.4 # unity test runner
         id: tests
         with:
           projectPath: ${{ matrix.projectPath }}
           unityVersion: ${{ matrix.unityVersion }}
           testMode: ${{ matrix.testMode }}
           artifactsPath: ${{ matrix.testMode }}-TestResult
-      - uses: actions/upload-artifact@v1
+      - uses: actions/upload-artifact@v1 # 上傳artifacts
         with:
-          name: Test results for ${{ matrix.testMode }}
-          path: ${{ steps.tests.outputs.artifactsPath }}
+          name: Test results for ${{ matrix.testMode }} # 顯示名稱
+          path: ${{ steps.tests.outputs.artifactsPath }} # 從上一步的輸出路徑中取得檔案

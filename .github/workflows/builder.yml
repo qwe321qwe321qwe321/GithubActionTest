@@ -1,11 +1,11 @@
 name: Builder
 
 on:
-  pull_request: { branches: [master] }
-  push: { branches: [master] }
+  pull_request: { branches: [master] } # 僅在pull request to master時觸發
+  push: { branches: [master] } # 僅在push to master時觸發
 
-env:
-  UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+env: # 環境變數
+  UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }} # 將UNITY_LICENSE設定為存在secrets中的UNITY_LICENSE
 
 jobs:
   buildAndTestForSomePlatforms:
@@ -14,31 +14,31 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        projectPath:
+        projectPath: # repo中unity project的相對路徑，若有多個project需要測試可以加在下面。
           - project
-        unityVersion:
+        unityVersion:  # unity的版本，若有多個版本需要測試可以加在下面。
           - 2018.4.13f1
-        targetPlatform:
+        targetPlatform: # 測試模式，僅測試過下面三種PC平台可過，iOS和WebGL不保證運行，可以依照需求註解掉不需要的。
           - StandaloneOSX # Build a macOS standalone (Intel 64-bit).
           - StandaloneWindows64 # Build a Windows 64-bit standalone.
           - StandaloneLinux64 # Build a Linux 64-bit standalone.
           #- iOS # Build an iOS player.
           #- WebGL # WebGL.
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2 # checkout方法用來clone本專案(repo)到裝置內。
         with:
-          lfs: true
-      - uses: actions/cache@v1
+          lfs: true # 要不要下載git-lfs檔，即大型檔案。
+      - uses: actions/cache@v1 # cache方法用於儲存/還原快取檔，用以加速運行。
         with:
-          path: ${{ matrix.projectPath }}/Library
-          key: Library-${{ matrix.projectPath }}-${{ matrix.targetPlatform }}
-      - uses: webbertakken/unity-builder@v0.10
+          path: ${{ matrix.projectPath }}/Library # 這裡我們用來快取Unity的Library資料夾，以防每次重開專案都要花時間建置Library資料夾。
+          key: Library-${{ matrix.projectPath }}-${{ matrix.targetPlatform }} # key即identifier，存取時需要。
+      - uses: webbertakken/unity-builder@v0.10 # unity builder
         with:
           projectPath: ${{ matrix.projectPath }}
           unityVersion: ${{ matrix.unityVersion }}
           targetPlatform: ${{ matrix.targetPlatform }}
-          #customParameters: "-myParameter myValue -myBoolean -ThirdParameter andItsValue"
-      - uses: actions/upload-artifact@v1
+          #customParameters: "-myParameter myValue -myBoolean -ThirdParameter andItsValue" # 自定義參數，依情況使用
+      - uses: actions/upload-artifact@v1 # 上傳artifacts
         with:
-          name: ${{ matrix.targetPlatform }} Build
-          path: build
+          name: ${{ matrix.targetPlatform }} Build # 顯示名稱
+          path: build # unity-builder產出的檔案路徑固定在build目錄
