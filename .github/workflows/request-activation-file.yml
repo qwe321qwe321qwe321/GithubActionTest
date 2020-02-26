@@ -3,18 +3,17 @@ on: repository_dispatch
 jobs:
   activation:
     name: Request manual activation file 🔑
+    if: github.event.action == 'request_activation_file'
     runs-on: ubuntu-latest
     steps:
         # Request manual activation file
         - name: Request manual activation file
           id: getManualLicenseFile
-          if: github.event.action == 'request_activation_file'
           uses: webbertakken/unity-request-manual-activation-file@v1.1
           with:
             unityVersion: 2018.4.13f1
         # Upload artifact (Unity_v20XX.X.XXXX.alf)
         - name: Expose as artifact
-          if: github.event.action == 'request_activation_file'
           uses: actions/upload-artifact@v1
           with:
             name: ${{ steps.getManualLicenseFile.outputs.filePath }}
