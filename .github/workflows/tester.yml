@@ -38,3 +38,13 @@ jobs:
         with:
           name: Test results for ${{ matrix.testMode }} # 顯示名稱
           path: ${{ steps.tests.outputs.artifactsPath }} # 從上一步的輸出路徑中取得檔案
+      - name: Purging the redundant artifacts.
+        run: 
+          chmod +x ./.github/workflows/purging-artifacts.sh
+          ./.github/workflows/purging-artifacts.sh
+        env: 
+          PERSONEL_TOKEN: ${{ secrets.PERSONEL_TOKEN }} # 將secerts中的PERSONEL_TOKEN設定為環境變數
+          KEEPING_COUNT: 1 # 保存前N新的artifacts 
+          OWNER: ${{ context.repo.owner }} # 從github取得owner
+          REPO: ${{ context.repo.repo }} # 從github取得repo名稱
+
