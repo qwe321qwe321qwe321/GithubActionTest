@@ -40,10 +40,10 @@ jobs:
           path: ${{ steps.tests.outputs.artifactsPath }} # 從上一步的輸出路徑中取得檔案
       - name: Purging the redundant artifacts.
         run: | # 這個|符號表示多行輸入
-          chmod +x ./.github/workflows/purging-artifacts.sh
-          ./.github/workflows/purging-artifacts.sh
+          chmod +x ./.github/workflows/purging-artifacts.sh # 改執行權限
+          ./.github/workflows/purging-artifacts.sh # 跑寫好的shell
         env: 
-          PERSONEL_TOKEN: ${{ secrets.PERSONEL_TOKEN }} # 將secerts中的PERSONEL_TOKEN設定為環境變數
+          PERSONAL_TOKEN: ${{ secrets.PERSONAL_TOKEN }} # 將secerts中的PERSONAL_TOKEN設定為環境變數
           KEEPING_COUNT: 1 # 保存前N新的artifacts 
-          OWNER_AND_REPO: ${{ github.repository }} # The string of owner and repository. For example, Codertocat/Hello-World.
+          OWNER_AND_REPO: ${{ github.repository }} # The string combine owner and repository. For example, Codertocat/Hello-World.
 

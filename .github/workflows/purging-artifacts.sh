@@ -36,6 +36,8 @@ while [[ -n "$URL" ]]; do
 
     # Number of artifacts on this page:
     COUNT=$(( $(jq <<<$JSON -r '.artifacts | length') ))
+	
+	echo There are $COUNT artifacts in $OWNER_AND_REPO
 
     # Loop on all artifacts on this page.
     for ((i=0; $i < $COUNT; i++)); do
