@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 
 # Customize those three lines with your repository and credentials:
-GITHUB_USER=$OWNER
-GITHUB_REPO=$REPO
+# Split the string "username/repo" into two parts.
+GITHUB_USER="$(cut -d'/' -f1 <<< $OWNER_AND_REPO)"
+GITHUB_REPO="$(cut -d'/' -f2 <<< $OWNER_AND_REPO)"
 GITHUB_TOKEN=$PERSONEL_TOKEN
 REPO=https://api.github.com/repos/$GITHUB_USER/$GITHUB_REPO
 echo GITHUB_USER
