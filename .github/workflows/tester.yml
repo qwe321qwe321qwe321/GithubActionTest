@@ -39,8 +39,6 @@ jobs:
           name: Test results for ${{ matrix.testMode }} # 顯示名稱
           path: ${{ steps.tests.outputs.artifactsPath }} # 從上一步的輸出路徑中取得檔案
   purgeArtifacts:
-    name: Purging the redundant artifacts.
-    runs-on: ubuntu-latest
     needs: [testAllModes]
       steps:
       - name: Purging the redundant artifacts.
