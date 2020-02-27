@@ -51,6 +51,14 @@ jobs:
         with:
           name: ${{ matrix.targetPlatform }} Build
           path: build
+  purgeArtifacts: # 清除多餘的artifacts
+    needs: [testAllModes] # 等到全部人跑完以後
+    name: Purging the redundant artifacts.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2 # checkout方法用來clone本專案(repo)到裝置內。
+        with:
+          lfs: true # 要不要下載git-lfs檔，即大型檔案。
       - name: Purging the redundant artifacts.
         run: | # 這個|符號表示多行輸入
           chmod +x ./.github/workflows/purging-artifacts.sh # 改執行權限
