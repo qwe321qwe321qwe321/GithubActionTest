@@ -39,7 +39,7 @@ jobs:
           name: Test results for ${{ matrix.testMode }} # 顯示名稱
           path: ${{ steps.tests.outputs.artifactsPath }} # 從上一步的輸出路徑中取得檔案
       - name: Purging the redundant artifacts.
-        run: 
+        run: | # 這個|符號表示多行輸入
           chmod +x ./.github/workflows/purging-artifacts.sh
           ./.github/workflows/purging-artifacts.sh
         env: 
