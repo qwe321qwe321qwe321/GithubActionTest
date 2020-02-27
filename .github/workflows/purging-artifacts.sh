@@ -4,7 +4,7 @@
 # Split the string "username/repo" into two parts.
 GITHUB_USER="$(cut -d'/' -f1 <<< $OWNER_AND_REPO)"
 GITHUB_REPO="$(cut -d'/' -f2 <<< $OWNER_AND_REPO)"
-GITHUB_TOKEN=$PERSONEL_TOKEN
+GITHUB_TOKEN=$PERSONAL_TOKEN
 REPO=https://api.github.com/repos/$GITHUB_USER/$GITHUB_REPO
 
 # Number of most recent versions to keep for each artifact:
