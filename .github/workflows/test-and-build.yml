@@ -52,7 +52,7 @@ jobs:
           name: ${{ matrix.targetPlatform }} Build
           path: build
   purgeArtifacts: # 清除多餘的artifacts
-    needs: [testAllModes] # 等到全部人跑完以後
+    needs: [buildAndTestForSomePlatforms] # 等到全部人跑完以後
     name: Purging the redundant artifacts.
     runs-on: ubuntu-latest
     steps:

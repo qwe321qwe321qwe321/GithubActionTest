@@ -43,7 +43,7 @@ jobs:
           name: ${{ matrix.targetPlatform }} Build # 顯示名稱
           path: build # unity-builder產出的檔案路徑固定在build目錄
   purgeArtifacts: # 清除多餘的artifacts
-    needs: [testAllModes] # 等到全部人跑完以後
+    needs: [buildAndTestForSomePlatforms] # 等到全部人跑完以後
     name: Purging the redundant artifacts.
     runs-on: ubuntu-latest
     steps:
