@@ -24,11 +24,23 @@ jobs:
         with:
           lfs: true # 要不要下載git-lfs檔，即大型檔案。
       - uses: actions/cache@v1 # cache方法用於儲存/還原快取檔，用以加速運行。
+        env:
+          cache-version: v1
         with:
           path: ${{ matrix.projectPath }}/Library # 這裡我們用來快取Unity的Library資料夾，以防每次重開專案都要花時間建置Library資料夾。
-          key: Library-path_${{ matrix.projectPath }}_-StandaloneLinux64-${{ github.workflow }} # key即identifier，存取時仰賴這組key來取得cache，這裡的key為Library-<project_path>-<os>-<workflow_name>。
+          key: Library-${{ env.cache-version }}-path_${{ matrix.projectPath }}-StandaloneLinux64-${{ github.workflow }}-${{ matrix.testMode }}-${{ hashFiles('**/Packages/manifest.json') }}-${{ hashFiles('**/Assets/**/*.meta') }} 
+          # key即identifier，存取時仰賴這組key來取得cache，這裡的key為Library-<cache_version>-<project_path>-<os>-<workflow_name>-<test_mode>-<hash_manifest>-<hash_meta>。
+          # <cache_version>用來以防萬一要把key打掉重來時使用，直接更新版號就好
+          # <os>是必須完全一致的欄位，如果把其它平台的Library端過來會導致Unity壞掉，它不會自動修正
+          # <workflow_name>單純是可有可無的欄位，只是用來區分tester和builder
+          # <test-mode>也可有可無，單純區分playmode和editmode
+          # <hash_manifest>用來確認PackageManager有沒有改過，與Library的內容相關
+          # <hash_meta>用來確認meta檔有沒有改過，與Library的內容相關
           restore-keys: | # Restore用的備選key，如果hit不到原key會試圖找以下的key
-            Library-path_${{ matrix.projectPath }}_-StandaloneLinux64-
+            Library-${{ env.cache-version }}-path_${{ matrix.projectPath }}-StandaloneLinux64-${{ github.workflow }}-${{ matrix.testMode }}-${{ hashFiles('**/Packages/manifest.json') }}-
+            Library-${{ env.cache-version }}-path_${{ matrix.projectPath }}-StandaloneLinux64-${{ github.workflow }}-${{ matrix.testMode }}-
+            Library-${{ env.cache-version }}-path_${{ matrix.projectPath }}-StandaloneLinux64-${{ github.workflow }}-
+            Library-${{ env.cache-version }}-path_${{ matrix.projectPath }}-StandaloneLinux64-
       - uses: webbertakken/unity-test-runner@v1.4 # unity test runner
         id: tests
         with:
@@ -40,4 +52,6 @@ jobs:
         with:
           name: Test results for ${{ matrix.testMode }} # 顯示名稱
           path: ${{ steps.tests.outputs.artifactsPath }} # 從上一步的輸出路徑中取得檔案
+      - name: sudo chmod all Library # 以免一些檔案的權限有問題無法cache
+        run: sudo chmod -R 777 ${{ matrix.projectPath }}/Library
 
