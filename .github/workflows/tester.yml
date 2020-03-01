@@ -28,7 +28,7 @@ jobs:
           cache-version: v1
         with:
           path: ${{ matrix.projectPath }}/Library # 這裡我們用來快取Unity的Library資料夾，以防每次重開專案都要花時間建置Library資料夾。
-          key: Library-${{ env.cache-version }}-path_${{ matrix.projectPath }}-StandaloneLinux64-${{ github.workflow }}-${{ matrix.testMode }}-${{ hashFiles(**/Packages/manifest.json) }}-${{ hashFiles(**/Assets/**/*.@(meta|cs)) }} # key即identifier，存取時仰賴這組key來取得cache，這裡的key為Library-<cache_version>-<project_path>-<os>-<workflow_name>-<test_mode>。
+          key: Library-${{ env.cache-version }}-path_${{ matrix.projectPath }}-StandaloneLinux64-${{ github.workflow }}-${{ matrix.testMode }}-${{ hashFiles('**/Packages/manifest.json') }}-${{ hashFiles('**/Assets/**/*.@(meta|cs)') }} # key即identifier，存取時仰賴這組key來取得cache，這裡的key為Library-<cache_version>-<project_path>-<os>-<workflow_name>-<test_mode>。
           restore-keys: | # Restore用的備選key，如果hit不到原key會試圖找以下的key
             Library-${{ env.cache-version }}-path_${{ matrix.projectPath }}-StandaloneLinux64-${{ github.workflow }}-${{ matrix.testMode }}-${{ hashFiles(**/Packages/manifest.json) }}-
             Library-${{ env.cache-version }}-path_${{ matrix.projectPath }}-StandaloneLinux64-${{ github.workflow }}-${{ matrix.testMode }}-
