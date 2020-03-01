@@ -31,9 +31,9 @@ jobs:
       - uses: actions/cache@v1 # cache方法用於儲存/還原快取檔，用以加速運行。
         with:
           path: ${{ matrix.projectPath }}/Library # 這裡我們用來快取Unity的Library資料夾，以防每次重開專案都要花時間建置Library資料夾。
-          key: Library-path_${{ matrix.projectPath }}_-StandaloneLinux64-${{ github.workflow }} # key即identifier，存取時仰賴這組key來取得cache，這裡的key為Library-<project_path>-<os>-<workflow_name>。
+          key: Library-path_${{ matrix.projectPath }}_-${{ matrix.targetPlatform }}-${{ github.workflow }} # key即identifier，存取時仰賴這組key來取得cache，這裡的key為Library-<project_path>-<os>-<workflow_name>。
           restore-keys: | # Restore用的備選key，如果hit不到原key會試圖找以下的key
-            Library-path_${{ matrix.projectPath }}_-StandaloneLinux64-
+            Library-path_${{ matrix.projectPath }}_-${{ matrix.targetPlatform }}-
       - uses: webbertakken/unity-builder@v0.10 # unity builder
         with:
           projectPath: ${{ matrix.projectPath }}
