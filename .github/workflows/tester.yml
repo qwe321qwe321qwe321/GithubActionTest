@@ -52,6 +52,6 @@ jobs:
         with:
           name: Test results for ${{ matrix.testMode }} # 顯示名稱
           path: ${{ steps.tests.outputs.artifactsPath }} # 從上一步的輸出路徑中取得檔案
-      - name: sudo chmod all Library # 以免一些檔案的權限有問題
+      - name: sudo chmod all Library # 以免一些檔案的權限有問題無法cache
         run: sudo chmod -R 777 ${{ matrix.projectPath }}/Library
 

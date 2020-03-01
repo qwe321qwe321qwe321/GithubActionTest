@@ -63,5 +63,5 @@ jobs:
         with:
           name: ${{ matrix.targetPlatform }} Build
           path: build
-      - name: sudo chmod all Library # 以免一些檔案的權限有問題
+      - name: sudo chmod all Library # 以免一些檔案的權限有問題無法cache
         run: sudo chmod -R 777 ${{ matrix.projectPath }}/Library
