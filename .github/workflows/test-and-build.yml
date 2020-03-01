@@ -51,19 +51,3 @@ jobs:
         with:
           name: ${{ matrix.targetPlatform }} Build
           path: build
-  purgeArtifacts: # 清除多餘的artifacts
-    needs: [buildAndTestForSomePlatforms] # 等到全部人跑完以後
-    name: Purging the redundant artifacts.
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2 # checkout方法用來clone本專案(repo)到裝置內。
-        with:
-          lfs: true # 要不要下載git-lfs檔，即大型檔案。
-      - name: Purging the redundant artifacts.
-        run: | # 這個|符號表示多行輸入
-          chmod +x ./.github/workflows/purging-artifacts.sh # 改執行權限
-          ./.github/workflows/purging-artifacts.sh # 跑寫好的shell
-        env: 
-          PERSONAL_TOKEN: ${{ secrets.PERSONAL_TOKEN }} # 將secerts中的PERSONAL_TOKEN設定為環境變數
-          KEEPING_COUNT: 1 # 保存前N新的artifacts 
-          OWNER_AND_REPO: ${{ github.repository }} # The string combine owner and repository. For example, Codertocat/Hello-World.
